@@ -3,6 +3,7 @@ from collections import defaultdict, OrderedDict
 import operator
 import math
 import matplotlib.pyplot as plt
+
 # Initialize some arrays.
 
 recalls = (0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
@@ -71,54 +72,54 @@ def computeDCG(rel_list, num_ret):
 
 def eval_print(topic, num_ret, total_no_relavant_docs, num_rel_ret, prec_at_recalls, avg_prec, prec_at_cutoffs, r_prec,
                F1_at_cutoffs, nDCG):
-      print "\nQueryid (Num):    %5d\n" % topic
-      print "Total number of documents over all queries\n"
-      print "    Retrieved:    %5d\n" % num_ret
-      print "    Relevant:     %5d\n" % total_no_relavant_docs
-      print "    Rel_ret:      %5d\n" % num_rel_ret
-      print "Interpolated Recall - Precision Averages:\n"
-      print "    at 0.00       %.4f\n" % prec_at_recalls[0]
-      print "    at 0.10       %.4f\n" % prec_at_recalls[1]
-      print "    at 0.20       %.4f\n" % prec_at_recalls[2]
-      print "    at 0.30       %.4f\n" % prec_at_recalls[3]
-      print "    at 0.40       %.4f\n" % prec_at_recalls[4]
-      print "    at 0.50       %.4f\n" % prec_at_recalls[5]
-      print "    at 0.60       %.4f\n" % prec_at_recalls[6]
-      print "    at 0.70       %.4f\n" % prec_at_recalls[7]
-      print "    at 0.80       %.4f\n" % prec_at_recalls[8]
-      print "    at 0.90       %.4f\n" % prec_at_recalls[9]
-      print "    at 1.00       %.4f\n" % prec_at_recalls[10]
-      print "Average precision (non-interpolated) for all rel docs(averaged over queries)\n"
-      print "                  %.4f\n" % avg_prec
-      print "Precision:\n"
-      print "  At    5 docs:   %.4f\n" % prec_at_cutoffs[0]
-      print "  At   10 docs:   %.4f\n" % prec_at_cutoffs[1]
-      print "  At   15 docs:   %.4f\n" % prec_at_cutoffs[2]
-      print "  At   20 docs:   %.4f\n" % prec_at_cutoffs[3]
-      print "  At   30 docs:   %.4f\n" % prec_at_cutoffs[4]
-      print "  At  100 docs:   %.4f\n" % prec_at_cutoffs[5]
-      print "  At  200 docs:   %.4f\n" % prec_at_cutoffs[6]
-      print "  At  500 docs:   %.4f\n" % prec_at_cutoffs[7]
-      print "  At 1000 docs:   %.4f\n" % prec_at_cutoffs[8]
-      print "R-Precision (precision after R (= num_rel for a query) docs retrieved):\n"
-      print "    Exact:        %.4f\n" % r_prec
-      print "***********************************************************"
-      print "F1-Measure:\n"
-      print "  At    5 docs:   %.4f\n" % F1_at_cutoffs[0]
-      print "  At   10 docs:   %.4f\n" % F1_at_cutoffs[1]
-      print "  At   15 docs:   %.4f\n" % F1_at_cutoffs[2]
-      print "  At   20 docs:   %.4f\n" % F1_at_cutoffs[3]
-      print "  At   30 docs:   %.4f\n" % F1_at_cutoffs[4]
-      print "  At  100 docs:   %.4f\n" % F1_at_cutoffs[5]
-      print "  At  200 docs:   %.4f\n" % F1_at_cutoffs[6]
-      print "  At  500 docs:   %.4f\n" % F1_at_cutoffs[7]
-      print "  At 1000 docs:   %.4f\n" % F1_at_cutoffs[8]
-      print "nDCG for docs retrieved :\n"
-      print "    Exact:        %.4f\n" % nDCG
+    print "\nQueryid (Num):    %5d\n" % topic
+    print "Total number of documents over all queries\n"
+    print "    Retrieved:    %5d\n" % num_ret
+    print "    Relevant:     %5d\n" % total_no_relavant_docs
+    print "    Rel_ret:      %5d\n" % num_rel_ret
+    print "Interpolated Recall - Precision Averages:\n"
+    print "    at 0.00       %.4f\n" % prec_at_recalls[0]
+    print "    at 0.10       %.4f\n" % prec_at_recalls[1]
+    print "    at 0.20       %.4f\n" % prec_at_recalls[2]
+    print "    at 0.30       %.4f\n" % prec_at_recalls[3]
+    print "    at 0.40       %.4f\n" % prec_at_recalls[4]
+    print "    at 0.50       %.4f\n" % prec_at_recalls[5]
+    print "    at 0.60       %.4f\n" % prec_at_recalls[6]
+    print "    at 0.70       %.4f\n" % prec_at_recalls[7]
+    print "    at 0.80       %.4f\n" % prec_at_recalls[8]
+    print "    at 0.90       %.4f\n" % prec_at_recalls[9]
+    print "    at 1.00       %.4f\n" % prec_at_recalls[10]
+    print "Average precision (non-interpolated) for all rel docs(averaged over queries)\n"
+    print "                  %.4f\n" % avg_prec
+    print "Precision:\n"
+    print "  At    5 docs:   %.4f\n" % prec_at_cutoffs[0]
+    print "  At   10 docs:   %.4f\n" % prec_at_cutoffs[1]
+    print "  At   15 docs:   %.4f\n" % prec_at_cutoffs[2]
+    print "  At   20 docs:   %.4f\n" % prec_at_cutoffs[3]
+    print "  At   30 docs:   %.4f\n" % prec_at_cutoffs[4]
+    print "  At  100 docs:   %.4f\n" % prec_at_cutoffs[5]
+    print "  At  200 docs:   %.4f\n" % prec_at_cutoffs[6]
+    print "  At  500 docs:   %.4f\n" % prec_at_cutoffs[7]
+    print "  At 1000 docs:   %.4f\n" % prec_at_cutoffs[8]
+    print "R-Precision (precision after R (= num_rel for a query) docs retrieved):\n"
+    print "    Exact:        %.4f\n" % r_prec
+    print "***********************************************************"
+    print "F1-Measure:\n"
+    print "  At    5 docs:   %.4f\n" % F1_at_cutoffs[0]
+    print "  At   10 docs:   %.4f\n" % F1_at_cutoffs[1]
+    print "  At   15 docs:   %.4f\n" % F1_at_cutoffs[2]
+    print "  At   20 docs:   %.4f\n" % F1_at_cutoffs[3]
+    print "  At   30 docs:   %.4f\n" % F1_at_cutoffs[4]
+    print "  At  100 docs:   %.4f\n" % F1_at_cutoffs[5]
+    print "  At  200 docs:   %.4f\n" % F1_at_cutoffs[6]
+    print "  At  500 docs:   %.4f\n" % F1_at_cutoffs[7]
+    print "  At 1000 docs:   %.4f\n" % F1_at_cutoffs[8]
+    print "nDCG for docs retrieved :\n"
+    print "    Exact:        %.4f\n" % nDCG
 
 
 def plotGraph(prec_at_recalls, topic):
-    plt.plot(recalls,prec_at_recalls)
+    plt.plot(recalls, prec_at_recalls)
     plt.xlabel("Recall")
     plt.ylabel("Precision")
     plt.title("Precision-Recall Curves")
@@ -210,16 +211,14 @@ def computePrecision(trec, qrel, num_rel, all_query):
         else:
             r_prec = prec_list[int(total_no_relavant_docs)]
 
-        #Now calculate interpolated precisions...
+        # Now calculate interpolated precisions...
 
         max_prec = 0.0;
-        for i in range(1000,0,-1):
-            if(prec_list[i]> max_prec):
+        for i in range(1000, 0, -1):
+            if (prec_list[i] > max_prec):
                 max_prec = prec_list[i]
             else:
                 prec_list[i] = max_prec
-
-
 
         # Finally, calculate precision at recall levels.
         prec_at_recalls = []
@@ -232,7 +231,7 @@ def computePrecision(trec, qrel, num_rel, all_query):
             else:
                 prec_at_recalls.append(0.0)
 
-        plotGraph(prec_at_recalls,topic)
+        plotGraph(prec_at_recalls, topic)
         # Now update running sums for overall stats.
 
         tot_num_ret += num_ret
@@ -274,24 +273,26 @@ def computePrecision(trec, qrel, num_rel, all_query):
     mean_avg_prec = float(sum_avg_prec) / num_of_topics
     avg_r_prec = float(sum_r_prec) / num_of_topics
     avg_nDCG = float(sum_nDCG) / num_of_topics
-    plotGraph(avg_prec_at_recalls,"All_Combinedcls")
-    eval_print(num_of_topics, tot_num_ret, tot_num_rel, tot_num_rel_ret,avg_prec_at_recalls, mean_avg_prec,avg_prec_at_cutoffs,avg_r_prec,avg_f1_at_cutoffs,avg_nDCG)
+    plotGraph(avg_prec_at_recalls, "All_Combinedcls")
+    eval_print(num_of_topics, tot_num_ret, tot_num_rel, tot_num_rel_ret, avg_prec_at_recalls, mean_avg_prec,
+               avg_prec_at_cutoffs, avg_r_prec, avg_f1_at_cutoffs, avg_nDCG)
+
 
 if __name__ == '__main__':
-        if (len(sys.argv)) == 4:
-            if sys.argv[1] == '-q':
-                file_qrel = sys.argv[2]
-                file_result = sys.argv[3]
-                qrel, num_rel = read_qrel(file_qrel)
-                trec = read_trec(file_result)
-                computePrecision(trec, qrel, num_rel, True)
-            else:
-                print "Usage:  trec_eval [-q] <qrel_file> <trec_file>\n\n"
-        elif (len(sys.argv)) == 3:
-            file_qrel = sys.argv[1]
-            file_result = sys.argv[2]
+    if (len(sys.argv)) == 4:
+        if sys.argv[1] == '-q':
+            file_qrel = sys.argv[2]
+            file_result = sys.argv[3]
             qrel, num_rel = read_qrel(file_qrel)
             trec = read_trec(file_result)
-            computePrecision(trec, qrel, num_rel, False)
+            computePrecision(trec, qrel, num_rel, True)
         else:
             print "Usage:  trec_eval [-q] <qrel_file> <trec_file>\n\n"
+    elif (len(sys.argv)) == 3:
+        file_qrel = sys.argv[1]
+        file_result = sys.argv[2]
+        qrel, num_rel = read_qrel(file_qrel)
+        trec = read_trec(file_result)
+        computePrecision(trec, qrel, num_rel, False)
+    else:
+        print "Usage:  trec_eval [-q] <qrel_file> <trec_file>\n\n"
