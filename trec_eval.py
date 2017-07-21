@@ -32,13 +32,13 @@ def read_qrel(file_qrel):
     l = f.readlines()
     for line in l:
         try:
-            topic, dummy, doc_id, rel = line.split()
+            topic, dummy, doc_id, rel = line.split('<:>')
             rel = int(rel)
-            temp_qrel[topic][doc_id] = rel
+            temp_qrel[int(topic)][doc_id] = rel
             if rel > 0:
-                temp_num_rel[topic] += 1
+                temp_num_rel[int(topic)] += 1
             else:
-                temp_num_rel[topic] += 0
+                temp_num_rel[int(topic)] += 0
         except Exception, e:
             print e
     f.close()
@@ -54,8 +54,8 @@ def read_trec(file_result):
     l = f.readlines()
     for line in l:
         try:
-            topic, dummy, doc_id, dummy, score, dummy = line.split()
-            temp_trec[topic][doc_id] = float(score)
+            topic, dummy, doc_id, dummy, score, dummy = line.split('<:>')
+            temp_trec[int(topic)][doc_id] = float(score)
         except Exception, e:
             print e
     f.close()
@@ -68,6 +68,10 @@ def computeDCG(rel_list, num_ret):
     for i in range(1, num_ret):
         dc_value += float(rel_list[i]) / math.log(1.0 + i)
     return dc_value
+    # dc_value = 0.0
+    # for i in range(0, num_ret):
+    #     dc_value += float(2**rel_list[i] - 1.0) / math.log(2.0 + i)
+    # return dc_value
 
 
 def eval_print(topic, num_ret, total_no_relavant_docs, num_rel_ret, prec_at_recalls, avg_prec, prec_at_cutoffs, r_prec,
@@ -148,9 +152,9 @@ def computePrecision(trec, qrel, num_rel, all_query):
         num_ret = 0  # Initialize number retrieved.
         num_rel_ret = 0  # Initialize number relevant retrieved.
         sum_prec = 0  # Initialize sum precision.
-        prec_list = [None] * len_list
-        rec_list = [None] * len_list
-        rel_list = [None] * (len_list - 1)
+        prec_list = [None] * 1001
+        rec_list = [None] * 1001
+        rel_list = [None] * 1000
         total_no_relavant_docs = float(num_rel[topic])
 
         # Now sort doc IDs based on scores and calculate stats.
@@ -249,7 +253,12 @@ def computePrecision(trec, qrel, num_rel, all_query):
         sum_r_prec += r_prec
 
         # Compute DCG
-        nDCG = computeDCG(rel_list, num_ret) / computeDCG(sorted(rel_list, reverse=True), num_ret)
+        calNDCG = computeDCG(rel_list, num_ret)
+        idealNDCG =computeDCG(sorted(rel_list, reverse=True), num_ret)
+        if not all(v == 0.0 for v in rel_list) and idealNDCG != 0.0:
+            nDCG =  float(calNDCG)/idealNDCG
+        else:
+            nDCG = 0.0
         sum_nDCG += nDCG
 
         # Print stats on a per query basis if requested.

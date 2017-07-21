@@ -17,29 +17,42 @@ def getResult(query, indexName, type):
         try:
             res = es.search(index=indexName, doc_type=type, _source_include=['docno', 'url', 'grade'], body={
                 "query": {
-                    "match": {
-                        "text": query
+                    "bool": {
+                        "must": [
+                            {
+                                "match": {
+                                    "evaluate": True
+                                }
+                            },
+                            {
+                                "match": {
+                                    "text": query
+                                }
+                            }
+                        ]
                     }
                 },
                 "sort": [
                     "_score"
                 ],
-                'size': 1000
+                'size': 500
             })
         except Exception, e:
             print e
 
         resultRankedListDict = defaultdict(lambda: 0.0)
+        qrelDict = OrderedDict()
         for hit in res['hits']['hits']:
             docno = str(hit['_source']['docno'].encode('utf-8', 'ignore'))
             normaldocNo = docno.lower()
             if normaldocNo not in documentSet:
-                if len(documentSet) == 1000:
-                    break
+                # if len(documentSet) == 200:
+                #     break
                 resultRankedListDict[docno] = float(hit['_score'])
+                qrelDict[docno] = int(hit['_source']['grade'])
                 documentSet.add(normaldocNo)
 
-        return resultRankedListDict
+        return resultRankedListDict, qrelDict
 
 
     except Exception, e:
@@ -54,8 +67,15 @@ def writeRankedList(resultDict, topicID):
             rank += 1
 
 
+def writeQrel(qrel, topicID):
+    with open('qrel_crawled.txt', 'a+') as f:
+        for docId, grade in qrel.iteritems():
+            f.write(str(topicID) + '<:>0<:>' + docId + '<:>' + str(grade) + '\n')
+
+
 if __name__ == '__main__':
-    for topicID in QUERIES:
+    for topicID in OrderedDict(sorted(QUERIES.items())):
         print topicID
-        result = getResult(str(QUERIES[topicID]), 'mi', 'document')
-        writeRankedList(OrderedDict(sorted(result.iteritems(), key=operator.itemgetter(1), reverse=True)), topicID)
+        result, qrel = getResult(str(QUERIES[topicID]), 'mi', 'document')
+        #writeRankedList(OrderedDict(sorted(result.iteritems(), key=operator.itemgetter(1), reverse=True)), topicID)
+        writeQrel(qrel, topicID)
